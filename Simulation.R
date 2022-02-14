@@ -3,18 +3,18 @@
 # 90% proba a  posteriori d'avoir VE > 0.2
 # 1.7% incidence dans le placebo et 20% de pdv
 
-# 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 = token de push github
-
-
-retour_theta <- function(x){
-  (x - 1)/(x - 2)
+retour_theta <- function(VE){
+  (VE - 1)/(VE - 2)
 }
 
-retour_theta(0.3)
+retour_VE <- function(theta){
+  (2*theta - 1)/(theta - 1)
+}
+
 
 calcul_p <- function(VE_true, n, theta_cible) { 
   
-  theta_true <- (VE_true - 1)/(VE_true - 2)
+  theta_true <- retour_theta(VE_true)
   
   n_vaccin <- n * theta_true
   
@@ -24,6 +24,7 @@ calcul_p <- function(VE_true, n, theta_cible) {
   
   return(p)
 }
+
 
 
 # 20 ; 30 ; 40
@@ -69,16 +70,3 @@ lines(y = 1-vec_sim_relev, x = sec_ve, "l", col = "red")
 abline(v=0.7, col = "blue")
 abline(h = 0.5, col = "blue")
 
-
-proba_go <- vec_sim_signif*vec_sim_relev
-proba_nogo <- (1 - vec_sim_signif) * (1 - vec_sim_relev)
-proba_indeter <- 1 - proba_go - proba_nogo
-proba_go ; proba_nogo ; proba_indeter
-
-plot(x = sec_ve, y = proba_go, "l", ylab = "Probability", xlab = "Vraie VE", main = " n(vaccin) = n(placebo) = 90")
-lines(x = sec_ve, y = proba_nogo, "l" , lty=2, lwd=1)
-lines(x = sec_ve, y = proba_indeter, "l", lty=2, lwd=3)
-abline(v=0.7, col = "red")
-abline(h = 0.95, col = "blue")
-
-proba_go[which(sec_ve == 0.7)] # n = 179
