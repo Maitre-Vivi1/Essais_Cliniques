@@ -74,16 +74,22 @@ abline(h = 0.95, col = "blue")
 
 sequ[which(test$go > 0.95)][1]
 
+test$go[which(sequ == 0.7)]
+
 test$go <- ksmooth(sequ, test$go, kernel = "normal", bandwidth = 0.01)$y
 test$nogo <- ksmooth(sequ, test$nogo, kernel = "normal", bandwidth = 0.01)$y
 test$indeter <- ksmooth(sequ, test$indeter, kernel = "normal", bandwidth = 0.01)$y
 
+library(ggplot2)
 
 ggplot(data = test, aes(x = sequ)) +
-  geom_line(aes(y = go), col = "steelblue4") +
-  geom_line(aes(y = nogo), col = "brown4") +
-  geom_line(aes(y = indeter)) +
-  geom_hline(yintercept = 0.95, col = "red") +
-  geom_vline(xintercept = 0.7, col = "red")
+  geom_line(aes(y = go, col = "go"), size = 1.25) +
+  geom_line(aes(y = nogo, col = "no go"), size = 1.25) +
+  geom_line(aes(y = indeter, col = "cannot decide"), size = 1.25) +
+  geom_hline(yintercept = test$go[which(sequ == 0.7)], col = "black") +
+  geom_vline(xintercept = 0.7, col = "black") +
+  scale_color_manual(name = "Decision", values = c("go" = "darkblue", "no go" = "red", "cannot decide" = "brown")) +
+  xlab("VE") +
+  ylab("probability")
 
 35/0.017/0.8*2
