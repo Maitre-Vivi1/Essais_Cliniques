@@ -2,4 +2,4 @@
 
 ## Vivien & Maxime & Léa
 
-#### Analyse d'une omerta vaccinale
+#### Analyse d'une "omerta" vaccinale
